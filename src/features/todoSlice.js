@@ -11,17 +11,23 @@ export const todoSlice=createSlice({
         addTodo:(state,action)=>{
            const todo={
                 id:nanoid(),
-                text:action.payload,
+                text:action.payload.text,
+                completed: false,
             }
             state.todos = [...state.todos, todo];
         },
         removeTodo:(state,action)=>{
-            state.todos=state.todos.filter((todo)=>todo.id!==action.payload)
+            state.todos=state.todos.filter((todo)=>todo.id!==action.payload.id)
         
-        }
+        },
+        toggleComplete: (state, action) => {
+            const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+            state.todos[index].completed = action.payload.completed;
+        },
+        
     
     }
 })
 
-export const {addTodo,removeTodo}=todoSlice.actions;
+export const {addTodo,removeTodo,toggleComplete}=todoSlice.actions;
 export default todoSlice.reducer;

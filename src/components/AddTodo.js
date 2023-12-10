@@ -6,7 +6,7 @@ function AddTodo() {
     const dispatch=useDispatch();
     const handalSubmit=(e)=>{
         e.preventDefault()
-        dispatch(addTodo(input))
+        dispatch(addTodo({text:input}))
         setInput('')
     }
   return (
