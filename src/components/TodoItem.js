@@ -1,17 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { removeTodo,toggleComplete } from '../features/todoSlice';
+import { toggleCompleteAsync } from '../features/todoSlice';
+import { deleteTodoAsync } from '../features/todoSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faTrash} from '@fortawesome/free-solid-svg-icons';
 
-const TodoItsms=({id,title,completed})=>{
+const TodoItsms=({id,text,completed})=>{
     const dispatch=useDispatch();
 
 const handleCheckboxClick=()=>{
-      dispatch(toggleComplete({id:id,completed:!completed}))
+      dispatch(toggleCompleteAsync({id:id,completed:!completed}))
 }
 const handleDeleteClick=()=>{
-     dispatch(removeTodo({id:id}))
+     dispatch(deleteTodoAsync({id}))
 }
     
 return (
@@ -25,7 +26,7 @@ return (
                 onChange={handleCheckboxClick}
             />
             <p className={`text-dark ${completed ? 'line-through' : ''}`}>
-                {title}
+                {text}
             </p>
         </span>
         <div className="task-links flex items-center gap-3 ml-auto">

@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addTodo } from '../features/todoSlice';
+import { addTodoAsync } from '../features/todoSlice';
 function AddTodo() {
     const [input ,setInput]=useState('');
     const dispatch=useDispatch();
     const handalSubmit=(e)=>{
-        e.preventDefault()
-        dispatch(addTodo({text:input}))
-        setInput('')
+        e.preventDefault();
+		if (input) {
+			dispatch(
+				addTodoAsync({
+					text: input,
+				})
+			);
+		}
     }
   return (
     <div>
