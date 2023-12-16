@@ -63,53 +63,49 @@ export const deleteTodoAsync = createAsyncThunk(
       }
     }
   );
-export const todoSlice=createSlice({
-    name:"todo",
+  export const todoSlice = createSlice({
+    name: "todo",
     initialState,
-    reducers:{
-        addTodo:(state,action)=>{
-           const todo={
-                id:nanoid(),
-                text:action.payload.text,
-                completed: false,
-            }
-            state.todos = [...state.todos, todo];
-        },
-        removeTodo:(state,action)=>{
-            state.todos=state.todos.filter((todo)=>todo.id!==action.payload.id)
-        
-        },
-        toggleComplete: (state, action) => {
-            const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
-            state.todos[index].completed = action.payload.completed;
-        },
-         
+    reducers: {
+      addTodo: (state, action) => {
+        const todo = {
+          id: nanoid(),
+          text: action.payload.text,
+          completed: false,
+        };
+        state.todos = [...state.todos, todo];
+      },
+      removeTodo: (state, action) => {
+        state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
+      },
+      toggleComplete: (state, action) => {
+        const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
+        state.todos[index].completed = action.payload.completed;
+      },
     },
     extraReducers: (builder) => {
-        builder
-            .addCase(getTodosAsync.fulfilled, (state, action) => {
-                state.todos = action.payload.todos;  // Update the todos array
-            })
-            .addCase(addTodoAsync.fulfilled, (state, action) => {
-                state.todos = [...state.todos, action.payload.todo];  // Correct way to add a new todo
-            })
-            .addCase(deleteTodoAsync.fulfilled, (state, action) => {
-                state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
-            })
-            .addCase(toggleCompleteAsync.fulfilled, (state, action) => {
-                const index = state.todos.findIndex(
-                    (todo) => todo.id === action.payload.todo.id
-                );
-                
-                if (index !== -1) {
-                    state.todos[index].completed = action.payload.todo.completed;
-                }
-            });
-        }
-    
-    
-
-})
+      builder
+        .addCase(getTodosAsync.fulfilled, (state, action) => {
+          state.todos = action.payload.todos;  // Update the todos array
+        })
+        .addCase(addTodoAsync.fulfilled, (state, action) => {
+          state.todos = [...state.todos, action.payload.todo];  // Correct way to add a new todo
+        })
+        .addCase(deleteTodoAsync.fulfilled, (state, action) => {
+          state.todos = state.todos.filter((todo) => todo.id !== action.payload.id);
+        })
+        .addCase(toggleCompleteAsync.fulfilled, (state, action) => {
+          const index = state.todos.findIndex(
+            (todo) => todo.id === action.payload.todo.id
+          );
+          
+          if (index !== -1) {
+            state.todos[index].completed = action.payload.todo.completed;
+          }
+        });
+    },
+  });
+  
 
 export const {addTodo,removeTodo,toggleComplete}=todoSlice.actions;
 export default todoSlice.reducer;

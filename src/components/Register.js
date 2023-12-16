@@ -1,20 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-const SignupPage = () => { 
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+
+const SignupPage = () => {
+  const [values, setValues] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const navigate = useNavigate();
+  axios.defaults.withCredentials = true;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios.post('http://localhost:4000/register', values)
+      .then(res => {
+        if (res.data.Status === "Success") {
+          navigate('/');
+        } else {
+          alert(res.data.Error);
+        }
+      })
+      .catch(error => {
+        console.error("Error during registration:", error);
+      });
+  };
+
   return (
     <div className="bg-gray-100">
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">Sign Up</h1>
-          <form >
-          <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-sm text-gray-600">Name</label>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="name" className="block mb-2 text-sm text-gray-600">Name</label>
               <input
                 type="text"
                 placeholder="name"
                 id="name"
                 name="name"
-              
+                value={values.name}
+                onChange={e => setValues({ ...values, name: e.target.value })}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
@@ -26,7 +53,8 @@ const SignupPage = () => {
                 placeholder="name.lastname@domain"
                 id="email"
                 name="email"
-              
+                value={values.email}
+                onChange={e => setValues({ ...values, email: e.target.value })}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
@@ -39,6 +67,8 @@ const SignupPage = () => {
                 placeholder="Password"
                 id="password"
                 name="password"
+                value={values.password}
+                onChange={e => setValues({ ...values, password: e.target.value })}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
